@@ -2,7 +2,7 @@ public class SnakePiece {
 	private int posX;
 	private int posY;
 	private int status; // 0 = head; 1 = body; 2 = tail
-	public Snake snake;
+	private int stepSize;
 	
 	public SnakePiece() {
 		setStatus(2);
@@ -14,29 +14,37 @@ public class SnakePiece {
 		setPosY(posY);
 	}
 	
-	private void moveHead() {
-		switch(snake.getDirection()) {
+	public SnakePiece(int status, int posX, int posY, int stepSize) {
+		setStatus(status);
+		setPosX(posX);
+		setPosY(posY);
+		this.stepSize = stepSize;
+	}
+	
+	private void moveHead(int snakeDirection) {
+		switch(snakeDirection) {
 			case 0: // north
-				posY = posY - snake.stepSize;
+				posY = posY - stepSize;
 				break;
 			case 1: // south
-				posY = posY + snake.stepSize;
+				posY = posY + stepSize;
 				break;
 			case 2: // east
-				posX = posX + snake.stepSize;
+				posX = posX + stepSize;
 				break;
 			case 3: // west
-				posX = posX - snake.stepSize;
+				posX = posX - stepSize;
 				break;
 			
 			default:
-				Main.outputError("Error, attempting to move in invalid direction: " + snake.getDirection());
+				Main.outputError("Error, attempting to move in invalid snakeDirection: " + snakeDirection);
 				break;
 		}
+		
 	}
 	
-	public boolean tryMoveHead() {
-		moveHead();
+	public boolean tryMoveHead(int snakeDirection) {
+		moveHead(snakeDirection);
 		// may need to make these values dynamic in the future to accommodate different canvas sizes
 		if(
 			getPosX() > 0 &&

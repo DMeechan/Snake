@@ -6,9 +6,5 @@ public class Player {
 		snake = new Snake(stepSize);
 		points = 0;
 	}
-
-	public void setDirection() {
-		
-	}
 	
 }

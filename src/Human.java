@@ -29,6 +29,7 @@ public class Human extends Player {
 					default:
 						break;
 				}
+				System.out.println(event.getCode().toString());
 			});
 		} else {
 			// use arrow keys

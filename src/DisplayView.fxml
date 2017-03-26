@@ -6,13 +6,12 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DisplayController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DisplayController">
    <center>
       <Canvas fx:id="canvas" height="400.0" width="400.0" />
    </center>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar cache="true" BorderPane.alignment="CENTER">
         <menus>
           <Menu disable="true" mnemonicParsing="false" text="New">
             <items>

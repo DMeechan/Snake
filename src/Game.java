@@ -1,33 +1,46 @@
-import javafx.animation.Timeline;
+import javafx.scene.Scene;
 
 public class Game {
-	private Timeline timer;
-	public Player player;
-	public Food food;
 	
-	public Game(int stepSize) {
-		player = new Player(stepSize);
+	public Player[] players;
+	public Food food;
+	public int stepSize;
+	
+	public Game(int stepSize, Scene scene) {
+		this.stepSize = stepSize;
+		players = new Player[] {
+				new Human(stepSize, scene, 0)
+				// ,new AI(stepSize),
+		};
+		
+		start();
+	}
+	
+	public void timerTick() {
+		for (Player player : players) {
+			if(player.snake.getAlive()) {
+				// Alive :)
+				player.snake.move();
+			} else {
+				// Dead :(
+			}
+		}
 	}
 	
 	public void start() {
 		
-		player.snake.aliveProperty().addListener(v -> {
-			if(!player.snake.getAlive()) {
-				// game over
-				stop();
-			}
-		});
+		for (Player player : players) {
+			player.snake.aliveProperty().addListener(v -> {
+				if (!player.snake.getAlive()) {
+					// game over
+					stop();
+				}
+			});
+		}
 	}
 	
 	public void stop() {
-		
+		System.out.println("lol oops");
 	}
-
-	public Timeline getTimer() {
-		return this.timer;
-	}
-
-	public void setTimer(Timeline timer) {
-		this.timer = timer;
-	}
+	
 }
