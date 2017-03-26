@@ -1,4 +1,4 @@
-#Snake
+# Snake
 Fun 2D Snake game in Java with a flat colour scheme.
 
 Uses JavaFX and Canvas.
