@@ -2,8 +2,8 @@ import javafx.scene.Scene;
 
 public class Human extends Player {
 	
-	public Human(int stepSize, String colour, Scene scene, int keyboardControlsLayout) {
-		super(stepSize, colour);
+	public Human(int stepSize, String colour, int playerNum, Scene scene, int keyboardControlsLayout) {
+		super(stepSize, colour, playerNum);
 		// keyboardControlsLayout(0) = WASD
 		// keyboardControlsLayout(1) = ARROWS
 		

@@ -11,17 +11,22 @@ public class Snake extends LinkedList<SnakePiece> {
 	public BooleanProperty alive = new SimpleBooleanProperty();
 	public Color colour = new Color(0,0,0,0);
 	
-	public Snake(int stepSize, String colour) {
+	public Snake(int stepSize, String colour, int playerNum) {
 		super();
 		this.setColour(Color.web(colour));
 		setAlive(true);
 		setStepSize(stepSize);
 		setDirection(2);
 		
-		this.add(new SnakePiece(0, 200, 200, stepSize)); // head
-		this.add(new SnakePiece(1, 200 - getStepSize(), 200)); // body
-		this.add(new SnakePiece(1, 200 - getStepSize() - getStepSize(), 200));
-		this.add(new SnakePiece(2, 200 - getStepSize() - getStepSize() - getStepSize(), 200)); // tail
+		int pos = (30 + (playerNum * 20));
+		
+		this.add(new SnakePiece(0, pos, pos, stepSize)); // head
+		this.add(new SnakePiece(1, pos - getStepSize(), pos)); // body
+		this.add(new SnakePiece(1, pos - getStepSize() - getStepSize(), pos));
+		this.add(new SnakePiece(2, pos - getStepSize() - getStepSize() - getStepSize(), pos)); // tail
+		//this.add(new SnakePiece(1, pos - getStepSize() - getStepSize()- getStepSize(), pos));
+		//this.add(new SnakePiece(1, pos - getStepSize() - getStepSize()- getStepSize()- getStepSize(), pos));
+		//this.add(new SnakePiece(1, pos - getStepSize() - getStepSize()- getStepSize()- getStepSize()- getStepSize(), pos));
 		
 	}
 	
@@ -50,9 +55,11 @@ public class Snake extends LinkedList<SnakePiece> {
 		}
 		
 		// now move head
-		if (!this.getFirst().tryMoveHead(getDirection())) {
-			// collided with wall
-			setAlive(false);
+		if(isAlive()) {
+			if (!this.getFirst().tryMoveHead(getDirection())) {
+				// collided with wall
+				setAlive(false);
+			}
 		}
 		
 	}

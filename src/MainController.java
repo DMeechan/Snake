@@ -35,9 +35,14 @@ public class MainController extends Stage {
 		game.start();
 		timer.play();
 		
+		Timeline stopCountdown = new Timeline((new KeyFrame(
+				Duration.millis(3000),
+				event -> stop())));
+		stopCountdown.setCycleCount(1);
+		
 		game.runningProperty().addListener(v -> {
 			if(!game.isRunning()) {
-				stop();
+				stopCountdown.play();
 			}
 		});
 	}

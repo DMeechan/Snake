@@ -6,10 +6,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
@@ -19,7 +21,7 @@ public class DisplayController extends Stage implements Initializable {
 	private GraphicsContext gc;
 	private Game game;
 	private int stepSize;
-	private Player[] players;
+	private ArrayList<Player> players;
 	
 	public DisplayController() {
 		
@@ -47,30 +49,39 @@ public class DisplayController extends Stage implements Initializable {
 		
 	}
 	
+	public void displayGameOver() {
+		gc.setFill(Color.web("#e74c3c"));
+		gc.setGlobalAlpha(0.7);
+		gc.fillText("GAME OVER", 20, 150);
+		gc.setGlobalAlpha(1);
+	}
+	
 	public void playerDied(Player player) {
-		System.out.println("PLAYER Has died!");
-		Boolean colourState = true;
-		int counter = 0;
+		
 		Timeline timer = new Timeline((new KeyFrame(
 				Duration.millis(300),
 				event -> {
-					showDeadSnake(player.snake, colourState);
-					System.out.println(colourState);
+					setDeadColour(player.snake);
 				}
 		)));
+		
 		timer.setCycleCount(10);
+		timer.play();
+		
+		timer.setOnFinished(v -> {
+			players.remove(player);
+			players.trimToSize();
+		});
 	}
 	
-	public void showDeadSnake(Snake snake, Boolean colourState) {
-		Color deadColourLight = Color.web("#c0392b");
-		Color deadColourDark = Color.web("#2c3e50");
+	public void setDeadColour(Snake snake) {
+		Color deadColourLight = Color.web("#e74c3c");
+		Color deadColourDark = Color.web("#c0392b");
 		
-		if(colourState) {
-			drawSnake(snake, deadColourLight);
-			colourState = false;
+		if(snake.getColour().equals(deadColourLight)) {
+			snake.setColour(deadColourDark);
 		} else {
-			drawSnake(snake, deadColourDark);
-			colourState = true;
+			snake.setColour(deadColourLight);
 		}
 	}
 	
@@ -81,14 +92,14 @@ public class DisplayController extends Stage implements Initializable {
 		Color colour;
 		for (Player player : players) {
 			Snake snake = player.snake;
-			if(snake.getAlive()) {
-				// Alive
-				drawSnake(snake);
-			} else {
-				// Dead
-			}
+			drawSnake(snake);
 			
 			counter++;
+		}
+		
+		if(!game.isRunning()) {
+			gc.setFont(new Font("Arial Rounded MT Bold", 58));
+			displayGameOver();
 		}
 		
 	}
