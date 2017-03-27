@@ -8,7 +8,7 @@ import java.util.Random;
 public class AI extends Player {
 	Timeline timer;
 	Food food;
-	boolean foodIsUp, foodIsRight;
+	//boolean foodIsUp, foodIsRight;
 	
 	public AI(int stepSize, String colour, int playerNum) {
 		super(stepSize, colour, playerNum);
@@ -16,83 +16,95 @@ public class AI extends Player {
 
 	}
 
-	public void findFoodDirection() {
+	public int findFoodDirectionY() {
 		SnakePiece head = getSnake().getFirst();
-		if(food.getPosX() != head.getPosX() && food.getPosY() != head.getPosY()) {
-			if(head.getPosX() - food.getPosY() < 0) {
-				// negative; go right
-				foodIsRight = true;
-			} else {
-				// positive; go left
-				foodIsRight = false;
-			}
-
+		if(food.getPosY() != head.getPosY()) {
 			if(head.getPosY() - food.getPosY() < 0) {
 				// negative ; go down
-				foodIsUp = false;
+				return 1;
 			} else {
 				// positive; go up
-				foodIsUp = true;
+				return 0;
 			}
+		} else {
+			// return -1 means it is on the correct axis already
+			return -1;
 		}
-
-
-
+	}
+	
+	public int findFoodDirectionX() {
+		SnakePiece head = getSnake().getFirst();
+		if(food.getPosX() != head.getPosX()) {
+			if(head.getPosX() - food.getPosX() < 0) {
+				// negative; go right
+				return 2;
+			} else {
+				// positive; go left
+				return 3;
+			}
+		} else {
+			// return -1 means it is on the correct axis already
+			return -1;
+		}
 	}
 
 	public void timerTick() {
-		findFoodDirection();
-
-		if(foodIsUp) {
-			turn(0);
+		int directionX = findFoodDirectionX();
+		if(directionX == -1) {
+			turn(findFoodDirectionY());
 		} else {
-			turn(1);
-		}
-
-		if(foodIsRight) {
-			turn(2);
-		} else {
-			turn(3);
+			turn(directionX);
 		}
 
 	}
 
-	public void turn(int direction) {
+	public void turn(int newDirection) {
 		// 0 = up; 1 = down; 2 = right; 3 = left
-		switch(direction) {
+		int oldDirection = getSnake().getDirection();
+		switch(newDirection) {
 			case 0: // up
-				if(direction != 0) {
-					getSnake().setDirection(0);
+				if(oldDirection != 0) { // not already up
+					if(oldDirection == 1) {
+						// down - need to move on X axis first instead
+						turn(findFoodDirectionX());
+					} else {
+						// left or right
+						getSnake().setDirection(0);
+					}
 				}
 				break;
 
 			case 1: // down
-				if(direction != 1) {
-				if(direction == 0) {
-					
-				} else {
-					getSnake().setDirection(1);
-
-				}
+				if(oldDirection != 1) { // not already down
+					if(oldDirection == 0) {
+						// up - need to move on X axis first instead
+						turn(findFoodDirectionX());
+					} else {
+						// left or right
+						getSnake().setDirection(1);
+					}
 				}
 				break;
 
 			case 2: // right
-				if(direction != 2) {
-					if(direction == 3) {
-						getSnake().setDirection(1);
+				if(oldDirection != 2) { // not already right
+					if(oldDirection == 3) {
+						// left - need to move on Y axis first instead
+						turn(findFoodDirectionY());
 					} else {
+						// up or down
 						getSnake().setDirection(2);
 					}
 				}
 				break;
 
 			case 3: // left
-				if(direction != 3) {
-					if (direction == 2) {
-						// need to go up or down first, and then left
-						getSnake().setDirection(1); // ????
+				if(oldDirection != 3) { // not already left
+					if (oldDirection == 2) {
+						// right - need to move on Y axis first instead
+						turn(findFoodDirectionY());
 					} else {
+						// up or down
 						getSnake().setDirection(3);
 					}
 				}

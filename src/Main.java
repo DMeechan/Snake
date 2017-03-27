@@ -18,7 +18,6 @@ public class Main extends Application {
         window = new MainController(1,1);
 
 	    // TODO: Fix multiple Human bug: keyboard input conflict
-	    // TODO: Create a basic snake AI
     }
     
     public static void main(String[] args) {

@@ -10,6 +10,7 @@ public class Game {
 	public Food food;
 	public int stepSize;
 	private int livingPlayers;
+	private boolean AIonly;
 	private static final String[] colours = new String[] {
 			"#2ecc71", "#1abc9c", "#3498db", "#9b59b6",
 			"#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1",
@@ -19,6 +20,10 @@ public class Game {
 	private BooleanProperty running = new SimpleBooleanProperty();
 	
 	public Game(int stepSize, Scene scene, int numHumans, int numAIs) {
+		AIonly = false;
+		if(numHumans == 0) {
+			AIonly = true;
+		}
 		this.stepSize = stepSize;
 		players = new ArrayList<>(numHumans + numAIs);
 
@@ -79,7 +84,7 @@ public class Game {
 	
 	public void timerTick() {
 
-		if(livingPlayers > 0) {
+		if(livingPlayers > 0 || AIonly == true) {
 			for (Player player : players) {
 				if(player.snake.getAlive()) {
 					// Alive :)
