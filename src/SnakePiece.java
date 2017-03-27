@@ -46,15 +46,10 @@ public class SnakePiece {
 	public boolean tryMoveHead(int snakeDirection) {
 		moveHead(snakeDirection);
 		// may need to make these values dynamic in the future to accommodate different canvas sizes
-		if(
-			getPosX() > 0 &&
-			getPosX() < 400 &&
-			getPosY() > 0 &&
-			getPosY() < 400
-		) {
-			return true;
-		}
-		return false;
+		return getPosX() > 0 &&
+				getPosX() < 400 &&
+				getPosY() > 0 &&
+				getPosY() < 400;
 	}
 
 	public int getPosX() {

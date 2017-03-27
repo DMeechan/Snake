@@ -1,12 +1,9 @@
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-
-import java.awt.event.KeyEvent;
 
 public class Human extends Player {
 	
-	public Human(int stepSize, Scene scene, int keyboardControlsLayout) {
-		super(stepSize);
+	public Human(int stepSize, String colour, Scene scene, int keyboardControlsLayout) {
+		super(stepSize, colour);
 		// keyboardControlsLayout(0) = WASD
 		// keyboardControlsLayout(1) = ARROWS
 		
@@ -29,7 +26,7 @@ public class Human extends Player {
 					default:
 						break;
 				}
-				System.out.println(event.getCode().toString());
+				//System.out.println(event.getCode().toString());
 			});
 		} else {
 			// use arrow keys

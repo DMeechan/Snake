@@ -1,17 +1,19 @@
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.paint.Color;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 public class Snake extends LinkedList<SnakePiece> {
 	private int direction;
 	public int stepSize;
 	public BooleanProperty alive = new SimpleBooleanProperty();
+	public Color colour = new Color(0,0,0,0);
 	
-	public Snake(int stepSize) {
+	public Snake(int stepSize, String colour) {
 		super();
+		this.setColour(Color.web(colour));
 		setAlive(true);
 		setStepSize(stepSize);
 		setDirection(2);
@@ -32,7 +34,7 @@ public class Snake extends LinkedList<SnakePiece> {
 	}
 	
 	public void move() {
-		//ListIterator<SnakePiece> position = this.listIterator(this.size()); // set position to pos of end
+	
 		Iterator<SnakePiece> position = this.descendingIterator();
 		
 		SnakePiece current = this.getLast(); // starts at the end
@@ -48,10 +50,7 @@ public class Snake extends LinkedList<SnakePiece> {
 		}
 		
 		// now move head
-		if (this.getFirst().tryMoveHead(getDirection())) {
-			// all fine
-			
-		} else {
+		if (!this.getFirst().tryMoveHead(getDirection())) {
 			// collided with wall
 			setAlive(false);
 		}
@@ -84,5 +83,17 @@ public class Snake extends LinkedList<SnakePiece> {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+	
+	public boolean isAlive() {
+		return alive.get();
+	}
+	
+	public Color getColour() {
+		return colour;
+	}
+	
+	public void setColour(Color colour) {
+		this.colour = colour;
 	}
 }

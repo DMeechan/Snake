@@ -34,6 +34,16 @@ public class MainController extends Stage {
 	private void start() {
 		game.start();
 		timer.play();
+		
+		game.runningProperty().addListener(v -> {
+			if(!game.isRunning()) {
+				stop();
+			}
+		});
+	}
+	
+	public void stop() {
+		timer.stop();
 	}
 	
 	private void timerTick() {
@@ -46,7 +56,7 @@ public class MainController extends Stage {
 		FXMLLoader displayFXMLLoader = new FXMLLoader(getClass().getResource("DisplayView.fxml"));
 		
 		try {
-			scene = new Scene(displayFXMLLoader.load(), 400, 425);;
+			scene = new Scene(displayFXMLLoader.load(), 400, 425);
 		} catch (IOException e) {
 			Main.outputError(e);
 		}
