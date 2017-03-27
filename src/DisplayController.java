@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,15 +23,18 @@ public class DisplayController extends Stage implements Initializable {
 	private Game game;
 	private int stepSize;
 	private ArrayList<Player> players;
+	private DropShadow headGlow;
 	
 	public DisplayController() {
-		
+
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		gc = canvas.getGraphicsContext2D();
-		
+		headGlow = new DropShadow();
+		headGlow.setOffsetX(0f);
+		headGlow.setOffsetY(0f);
 	}
 	
 	public void setUpDisplay(Game game) {
@@ -46,13 +50,20 @@ public class DisplayController extends Stage implements Initializable {
 				}
 			});
 		}
+
+		headGlow.setWidth(stepSize * 1.2);
+		headGlow.setHeight(stepSize * 1.2);
 		
 	}
 	
 	public void displayGameOver() {
 		gc.setFill(Color.web("#e74c3c"));
+		headGlow.setColor(Color.web("#e74c3c"));
+
 		gc.setGlobalAlpha(0.7);
+		gc.setEffect(headGlow);
 		gc.fillText("GAME OVER", 20, 150);
+		gc.setEffect(null);
 		gc.setGlobalAlpha(1);
 	}
 	
@@ -96,6 +107,8 @@ public class DisplayController extends Stage implements Initializable {
 			
 			counter++;
 		}
+
+		drawFood();
 		
 		if(!game.isRunning()) {
 			gc.setFont(new Font("Arial Rounded MT Bold", 58));
@@ -119,9 +132,13 @@ public class DisplayController extends Stage implements Initializable {
 			drawBody(current.getPosX(), current.getPosY());
 			current = position.next();
 		}
-		
+
+
+		headGlow.setColor(colour);
+		gc.setEffect(headGlow);
 		drawHead(snake.getFirst().getPosX(), snake.getFirst().getPosY());
-		drawTail(snake.getFirst().getPosX(), snake.getFirst().getPosY());
+		gc.setEffect(null);
+		drawTail(snake.getLast().getPosX(), snake.getLast().getPosY());
 	}
 	
 	public void clear() {
@@ -131,15 +148,16 @@ public class DisplayController extends Stage implements Initializable {
 		gc.fillRect(0,0,canvas.getWidth(),canvas.getWidth());
 	}
 
+	public void drawFood() {
+		gc.setFill(Color.web("#ecf0f1"));
+		gc.fillOval(game.food.getPosX(), game.food.getPosY(), stepSize, stepSize);
+	}
+
 	public void drawHead(int posX, int posY) {
+		gc.fillOval(posX, posY, stepSize, stepSize);
+
 		gc.fillRect(posX,posY,stepSize,stepSize);
-		
-		/*
-		gc.beginPath();
-		gc.moveTo(50, 50);
-		gc.bezierCurveTo(150, 20, 150, 150, 75, 150);
-		gc.closePath();
-		*/
+
 	}
 
 	public void drawBody(int posX, int posY) {

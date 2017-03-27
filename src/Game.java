@@ -33,6 +33,15 @@ public class Game {
 		start();
 	}
 
+	public void generateFood() {
+		food = new Food();
+		food.eatenProperty().addListener(v -> {
+			if(food.isEaten()) {
+				generateFood();
+			}
+		});
+	}
+
 	public void start() {
 		setRunning(true);
 		livingPlayers = 0;
@@ -42,7 +51,8 @@ public class Game {
 			}
 		}
 		checkLiving();
-		System.out.println("Living: " + livingPlayers);
+		generateFood();
+		//System.out.println("Living: " + livingPlayers);
 	}
 
 
@@ -83,18 +93,28 @@ public class Game {
 		for (Player original : players) {
 			if(original.snake.getAlive()) {
 				for (Player checkee : players) {
-					if(checkee.snake.getAlive()) {
+					if (checkee.snake.getAlive()) {
 						for (SnakePiece piece : checkee.snake) {
 							SnakePiece originalHead = original.snake.getFirst();
-							if(!originalHead.equals(piece)) { // make sure it isn't colliding with its own head...
-								if(originalHead.getPosX() == piece.getPosX() && originalHead.getPosY() == piece.getPosY()) {
+							if (!originalHead.equals(piece)) { // make sure it isn't colliding with its own head...
+								if (originalHead.getPosX() == piece.getPosX() && originalHead.getPosY() == piece.getPosY()) {
 									original.snake.setAlive(false);
-									checkee.snake.setAlive(false);
+									if (piece.getStatus() == 0) { // only kill the other snake if its head collided too
+										checkee.snake.setAlive(false);
+									}
 								}
 							}
 						}
 					}
 				}
+				SnakePiece head = original.snake.getFirst();
+				if(head.getPosX() == food.getPosX() && head.getPosY() == food.getPosY()) {
+					// it has eaten the food! now feed the man!
+					food.setEaten(true);
+					original.snake.addPiece();
+					System.out.println(original.snake.size());
+				}
+
 			}
 		}
 	}

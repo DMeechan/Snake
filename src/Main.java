@@ -14,10 +14,10 @@ public class Main extends Application {
     @Override
     public void start(Stage window) throws Exception {
         // set up basic window - all activity will happen inside the window object
-        window = new MainController(2,2);
+	    // max: 2 human players; 14 AI players
+        window = new MainController(1,1);
 
 	    // TODO: Fix multiple Human bug: keyboard input conflict
-	    // TODO: Add food
     }
     
     public static void main(String[] args) {

@@ -18,12 +18,17 @@ public class MainController extends Stage {
 	private int numHumans, numAIs;
 	
 	public MainController(int numHumans, int numAIs) {
-		this.numHumans = numHumans;
-		this.numAIs = numAIs;
+		if(numHumans > -1 && numHumans < 3 && numAIs > -1 && numAIs < 15 && (numHumans + numAIs) > 0) {
+			this.numHumans = numHumans;
+			this.numAIs = numAIs;
 
-		loadDisplayFXMLLoader();
-		loadScene();
-		newGame();
+			loadDisplayFXMLLoader();
+			loadScene();
+			newGame();
+
+		} else {
+			Main.outputError("Error: invalid number of players entered. Maximum of: 2 humans and 14 AIs");
+		}
 	}
 
 	public void newGame() {
