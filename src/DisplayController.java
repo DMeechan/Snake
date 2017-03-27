@@ -82,6 +82,9 @@ public class DisplayController extends Stage implements Initializable {
 		timer.setOnFinished(v -> {
 			players.remove(player);
 			players.trimToSize();
+			// FIX!
+			//players.add(new AI(stepSize, Game.colours[0], 1));
+			//
 		});
 	}
 	
@@ -102,8 +105,7 @@ public class DisplayController extends Stage implements Initializable {
 		int counter = 0;
 		Color colour;
 		for (Player player : players) {
-			Snake snake = player.snake;
-			drawSnake(snake);
+			drawSnake(player.snake);
 			
 			counter++;
 		}
@@ -133,7 +135,6 @@ public class DisplayController extends Stage implements Initializable {
 			current = position.next();
 		}
 
-
 		headGlow.setColor(colour);
 		gc.setEffect(headGlow);
 		drawHead(snake.getFirst().getPosX(), snake.getFirst().getPosY());
@@ -142,10 +143,11 @@ public class DisplayController extends Stage implements Initializable {
 	}
 	
 	public void clear() {
-		gc.clearRect(0,0,400,400);
-		
+		gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
 		gc.setFill(Color.web("#2c3e50"));
-		gc.fillRect(0,0,canvas.getWidth(),canvas.getWidth());
+		//gc.fill();
+		gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
+		
 	}
 
 	public void drawFood() {

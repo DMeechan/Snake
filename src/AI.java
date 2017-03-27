@@ -3,15 +3,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AI extends Player {
 	Timeline timer;
 	Food food;
+	ArrayList<Player> players;
 	//boolean foodIsUp, foodIsRight;
 	
-	public AI(int stepSize, String colour, int playerNum) {
+	public AI(int stepSize, String colour, int playerNum, ArrayList<Player> players) {
 		super(stepSize, colour, playerNum);
+		this.players = players;
 		// randomAI();
 
 	}
@@ -49,13 +52,96 @@ public class AI extends Player {
 	}
 
 	public void timerTick() {
-		int directionX = findFoodDirectionX();
-		if(directionX == -1) {
-			turn(findFoodDirectionY());
-		} else {
-			turn(directionX);
+		if(!wallCollisionDetection()) {
+			// continue with whatever direction the wallCollisionDetection() set if it was true
+			if(!snakeCollisionDetection()) {
+				int directionX = findFoodDirectionX();
+				if(directionX == -1) {
+					turn(findFoodDirectionY());
+				} else {
+					turn(directionX);
+				}
+			}
 		}
-
+	}
+	
+	public boolean snakeCollisionDetection() {
+		SnakePiece head = getSnake().getFirst();
+		int direction = getSnake().getDirection();
+		int[] result = expectedPosition(head.getPosX(), head.getPosY(), direction);
+		int newPosX = result[0];
+		int newPosY = result[1];
+		
+		for (Player checkee : players) {
+			if (checkee.snake.getAlive()) {
+				for (SnakePiece piece : checkee.snake) {
+					if (!head.equals(piece)) { // make sure it isn't colliding with its own head...
+						if (newPosX == piece.getPosX() && newPosY == piece.getPosY()) {
+							// they may collide; take evasive action
+							if(direction == 2 || direction == 3) {
+								// move up or down
+								turn(findFoodDirectionY());
+							} else {
+								// move left or right
+								turn(findFoodDirectionX());
+							}
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private int[] expectedPosition(int currentPosX, int currentPosY, int direction) {
+		int increment = 10;
+		int newPosX = 0; int newPosY = 0;
+		switch(direction) {
+			case 0:
+				newPosY = currentPosY - increment;
+				newPosX = currentPosX;
+				break;
+			case 1:
+				newPosY = currentPosY + increment;
+				newPosX = currentPosX;
+				break;
+			case 2:
+				newPosX = currentPosX + increment;
+				newPosY = currentPosY;
+				break;
+			case 3:
+				newPosX = currentPosX - increment;
+				newPosY = currentPosY;
+				break;
+			default:
+				break;
+		}
+		
+		int[] result = {newPosX, newPosY};
+		return result;
+	}
+	
+	public boolean wallCollisionDetection() {
+		int currentDirection = getSnake().getDirection();
+		int posX = getSnake().getFirst().getPosX();
+		int posY = getSnake().getFirst().getPosY();
+		
+		if((posX == 390 && currentDirection == 2) || (posX == 10 && currentDirection == 3)) {
+			// about to smash into wall
+			// need to move up or down
+			getSnake().setDirection(0); // at least try to go up
+			turn(findFoodDirectionY());
+			return true;
+		} else if ((posY == 390 && currentDirection == 1) || (posY == 10 && currentDirection == 0)) {
+			// need to move left or right
+			getSnake().setDirection(3);
+			turn(findFoodDirectionX());
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void turn(int newDirection) {

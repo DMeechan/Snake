@@ -18,6 +18,8 @@ public class Main extends Application {
         window = new MainController(1,1);
 
 	    // TODO: Fix multiple Human bug: keyboard input conflict
+        // TODO: Fix square (coloured like the latest snake) appearing in top left corner when food spawns
+        
     }
     
     public static void main(String[] args) {

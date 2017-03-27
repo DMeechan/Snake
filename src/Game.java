@@ -11,7 +11,7 @@ public class Game {
 	public int stepSize;
 	private int livingPlayers;
 	private boolean AIonly;
-	private static final String[] colours = new String[] {
+	public static final String[] colours = new String[] {
 			"#2ecc71", "#1abc9c", "#3498db", "#9b59b6",
 			"#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1",
 			"#16a085", "#27ae60", "#2980b9", "#8e44ad",
@@ -32,7 +32,7 @@ public class Game {
 		}
 
 		for(int i = numHumans; i < (numAIs + numHumans); i++) {
-			players.add(new AI(stepSize, colours[i], i + 1));
+			players.add(new AI(stepSize, colours[i], i + 1, players));
 		}
 
 		start();
@@ -126,7 +126,6 @@ public class Game {
 					food.setEaten(true);
 					original.snake.addPiece();
 					original.setPoints(original.getPoints() + 10);
-					System.out.println(original.snake.size());
 				}
 
 			}

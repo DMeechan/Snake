@@ -10,9 +10,10 @@ public class Food {
 		setEaten(false);
 		Random rng = new Random();
 
-		posX = rng.nextInt(395);
+		//posX = rng.nextInt(395);
+		posX = rng.nextInt(390 - 10 + 1) + 10;
 		posX = ((posX + 5) / 10)*10;
-		posY = rng.nextInt(395);
+		posY = rng.nextInt(390 - 10 + 1) + 10;
 		posY = ((posY + 5) / 10)*10;
 	}
 
