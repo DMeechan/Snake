@@ -54,13 +54,12 @@ public class AI extends Player {
 				if(direction != 0) {
 					getSnake().setDirection(0);
 				}
-				setPoints(0);
 				break;
 
 			case 1: // down
 				if(direction != 1) {
 				if(direction == 0) {
-
+					
 				} else {
 					getSnake().setDirection(1);
 
