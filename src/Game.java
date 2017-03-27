@@ -67,9 +67,9 @@ public class Game {
 	public void checkCollissions() {
 		for (Player original : players) {
 			for (Player checkee : players) {
-				if (!original.equals(checkee)) { // make sure they're not the same
-					for (SnakePiece piece : checkee.snake) {
-						SnakePiece originalHead = original.snake.getFirst();
+				for (SnakePiece piece : checkee.snake) {
+					SnakePiece originalHead = original.snake.getFirst();
+					if(!originalHead.equals(piece)) { // make sure it isn't colliding with its own head...
 						if(originalHead.getPosX() == piece.getPosX() && originalHead.getPosY() == piece.getPosY()) {
 							original.snake.setAlive(false);
 							checkee.snake.setAlive(false);
