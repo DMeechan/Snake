@@ -84,7 +84,7 @@ public class Snake extends LinkedList<SnakePiece> {
 		this.alive.set(alive);
 	}
 
-	private int getDirection() {
+	public int getDirection() {
 		return this.direction;
 	}
 

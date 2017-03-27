@@ -35,6 +35,11 @@ public class Game {
 
 	public void generateFood() {
 		food = new Food();
+		for (Player player : players) {
+			if(player.getClass().toString().equals("class AI")) {
+				((AI) player).setFood(food);
+			}
+		}
 		food.eatenProperty().addListener(v -> {
 			if(food.isEaten()) {
 				generateFood();
@@ -79,6 +84,9 @@ public class Game {
 				if(player.snake.getAlive()) {
 					// Alive :)
 					player.snake.move();
+					if(player.getClass().toString().equals("class AI")) {
+						((AI) player).timerTick();
+					}
 				}
 			}
 		} else {
@@ -112,14 +120,13 @@ public class Game {
 					// it has eaten the food! now feed the man!
 					food.setEaten(true);
 					original.snake.addPiece();
+					original.setPoints(original.getPoints() + 10);
 					System.out.println(original.snake.size());
 				}
 
 			}
 		}
 	}
-
-
 	
 	public boolean isRunning() {
 		return running.get();
