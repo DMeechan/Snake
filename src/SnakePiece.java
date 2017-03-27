@@ -46,6 +46,7 @@ public class SnakePiece {
 	public boolean tryMoveHead(int snakeDirection) {
 		moveHead(snakeDirection);
 		// may need to make these values dynamic in the future to accommodate different canvas sizes
+		//System.out.println("Head position X: "  + getPosX() + " Y: " + getPosY());
 		return getPosX() > 0 &&
 				getPosX() < 400 &&
 				getPosY() > 0 &&

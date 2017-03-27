@@ -7,12 +7,14 @@ import java.util.LinkedList;
 
 public class Snake extends LinkedList<SnakePiece> {
 	private int direction;
-	public int stepSize;
-	public BooleanProperty alive = new SimpleBooleanProperty();
-	public Color colour = new Color(0,0,0,0);
+	private int stepSize;
+	private BooleanProperty alive = new SimpleBooleanProperty();
+	private Color colour;
+	public boolean updatedDead;
 	
 	public Snake(int stepSize, String colour, int playerNum) {
 		super();
+		updatedDead = false;
 		this.setColour(Color.web(colour));
 		setAlive(true);
 		setStepSize(stepSize);
@@ -39,36 +41,34 @@ public class Snake extends LinkedList<SnakePiece> {
 	}
 	
 	public void move() {
-	
+
 		Iterator<SnakePiece> position = this.descendingIterator();
-		
+
 		SnakePiece current = this.getLast(); // starts at the end
 		SnakePiece next = null;
-		
+
 		// move whole body and tail except head
-		
+
 		while (position.hasNext() && (current.getStatus() > 0)) {
 				next = position.next(); // hopefully position.next will increment it to the next one
 				current.setPosX(next.getPosX());
 				current.setPosY(next.getPosY());
 				current = next;
 		}
-		
+
 		// now move head
-		if(isAlive()) {
-			if (!this.getFirst().tryMoveHead(getDirection())) {
-				// collided with wall
-				setAlive(false);
-			}
+		if (!this.getFirst().tryMoveHead(getDirection())) {
+			// collided with wall
+			setAlive(false);
 		}
-		
+
 	}
-	
-	public int getStepSize() {
+
+	private int getStepSize() {
 		return stepSize;
 	}
-	
-	public void setStepSize(int stepSize) {
+
+	private void setStepSize(int stepSize) {
 		this.stepSize = stepSize;
 	}
 	
@@ -83,16 +83,16 @@ public class Snake extends LinkedList<SnakePiece> {
 	public void setAlive(boolean alive) {
 		this.alive.set(alive);
 	}
-	
-	public int getDirection() {
+
+	private int getDirection() {
 		return this.direction;
 	}
 
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-	
-	public boolean isAlive() {
+
+	private boolean isAlive() {
 		return alive.get();
 	}
 	

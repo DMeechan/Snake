@@ -15,19 +15,27 @@ public class MainController extends Stage {
 	private DisplayController displayController;
 	private Scene scene;
 	private Timeline timer;
+	private int numHumans, numAIs;
 	
-	public MainController() {
+	public MainController(int numHumans, int numAIs) {
+		this.numHumans = numHumans;
+		this.numAIs = numAIs;
+
 		loadDisplayFXMLLoader();
 		loadScene();
-		
-		game = new Game(10, scene);
+		newGame();
+	}
+
+	public void newGame() {
+		System.out.println("<----- NEW GAME ----->");
+		game = new Game(10, scene, numHumans, numAIs);
 		displayController.setUpDisplay(game);
-		
+
 		timer = new Timeline((new KeyFrame(
 				Duration.millis(60),
 				event -> timerTick())));
 		timer.setCycleCount(Animation.INDEFINITE);
-		
+
 		start();
 	}
 	
@@ -49,6 +57,8 @@ public class MainController extends Stage {
 	
 	public void stop() {
 		timer.stop();
+		game = null;
+		newGame();
 	}
 	
 	private void timerTick() {
@@ -97,13 +107,6 @@ public class MainController extends Stage {
 			Main.outputError(e);
 		}
 	}
-	
-	public Timeline getTimer() {
-		return this.timer;
-	}
-	
-	public void setTimer(Timeline timer) {
-		this.timer = timer;
-	}
+
 	
 }

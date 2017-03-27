@@ -14,9 +14,8 @@ public class Main extends Application {
     @Override
     public void start(Stage window) throws Exception {
         // set up basic window - all activity will happen inside the window object
-        window = new MainController();
-	
-	    // TODO: Fix multiple Human bug: 1 human death causing game over
+        window = new MainController(2,2);
+
 	    // TODO: Fix multiple Human bug: keyboard input conflict
 	    // TODO: Add food
     }
