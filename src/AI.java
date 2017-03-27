@@ -19,11 +19,21 @@ public class AI extends Player {
 	public void findFoodDirection() {
 		SnakePiece head = getSnake().getFirst();
 		if(food.getPosX() != head.getPosX() && food.getPosY() != head.getPosY()) {
-			// negative; go right
-// positive; go left
-			foodIsRight = head.getPosX() - food.getPosY() < 0;
+			if(head.getPosX() - food.getPosY() < 0) {
+				// negative; go right
+				foodIsRight = true;
+			} else {
+				// positive; go left
+				foodIsRight = false;
+			}
 
-			foodIsUp = head.getPosY() - food.getPosY() >= 0;
+			if(head.getPosY() - food.getPosY() < 0) {
+				// negative ; go down
+				foodIsUp = false;
+			} else {
+				// positive; go up
+				foodIsUp = true;
+			}
 		}
 
 
